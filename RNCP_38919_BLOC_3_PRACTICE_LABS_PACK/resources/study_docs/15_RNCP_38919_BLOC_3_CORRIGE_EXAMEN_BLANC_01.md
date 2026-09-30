@@ -55,6 +55,7 @@ dst_rncp38919_bloc_3/
 ├── app/
 │   ├── __init__.py
 │   ├── config.py
+│   ├── demo_model.py
 │   ├── schemas.py
 │   ├── model.py
 │   └── main.py
@@ -239,28 +240,45 @@ class PredictionResponse(BaseModel):
 
 Pour le practice pack, on peut générer un petit modèle pédagogique compatible avec `predict()`.
 
-`scripts/create_artifact.py` :
+Pour éviter le problème de sérialisation lié au module `__main__` avec `pickle`/`joblib`, la classe du modèle est isolée dans `app/demo_model.py` :
 
 ```python
-from pathlib import Path
-import joblib
-
-
+# app/demo_model.py
 class DemoRiskModel:
+    """Tiny deterministic model used only by the practice pack."""
+
     def predict(self, rows):
         outputs = []
         for distance_km, package_weight_kg in rows:
-            score = distance_km + 2 * package_weight_kg
+            score = float(distance_km) + 2 * float(package_weight_kg)
             outputs.append(int(score >= 20))
         return outputs
+```
 
+Et le script de génération `scripts/create_artifact.py` configure dynamiquement `sys.path` pour être exécutable depuis n'importe quel dossier :
 
-Path("models").mkdir(parents=True, exist_ok=True)
-joblib.dump(DemoRiskModel(), "models/model.joblib")
-print("models/model.joblib created")
+```python
+# scripts/create_artifact.py
+import sys
+from pathlib import Path
+
+# Garantit que la racine du projet est dans sys.path quel que soit le CWD
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+import joblib
+from app.demo_model import DemoRiskModel
+
+models_dir = PROJECT_ROOT / "models"
+models_dir.mkdir(parents=True, exist_ok=True)
+output_path = models_dir / "model.joblib"
+joblib.dump(DemoRiskModel(), output_path)
+print(f"Artifact created: {output_path}")
 ```
 
 > Ce modèle est purement pédagogique.
+
 
 ---
 
@@ -859,21 +877,25 @@ stages:
 
 tests:
   stage: test
+  image: python:3.12-slim
   script:
     - python --version
-    - python -m venv .venv
-    - source .venv/bin/activate
-    - pip install -r requirements.txt
-    - python scripts/create_artifact.py
+    - pip install --no-cache-dir -r requirements.txt
     - pytest -v
 
 docker_build:
   stage: build
+  image: docker:27-cli
+  services:
+    - docker:27-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
   script:
     - docker build -t parcelpulse-api:latest .
 ```
 
-Le Runner doit être le Runner `shell` préparé avant l’épreuve.
+Cette configuration est compatible aussi bien avec un Runner `shell` qu'avec un Runner `docker` standard (utilisant Docker-in-Docker).
+
 
 Vérifier :
 
@@ -999,6 +1021,7 @@ metadata:
   name: parcelpulse-pv
 
 spec:
+  storageClassName: manual
   capacity:
     storage: 1Gi
   accessModes:
@@ -1007,7 +1030,7 @@ spec:
     path: /tmp/parcelpulse-models
 ```
 
-> `hostPath` est un choix de lab. Le backend réel dépend du cluster.
+> `hostPath` est un choix de lab. Le backend réel dépend du cluster. L'attribution explicite de `storageClassName: manual` garantit la liaison immédiate avec le PVC.
 
 ---
 
@@ -1021,6 +1044,7 @@ metadata:
   namespace: parcelpulse
 
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
@@ -1038,7 +1062,7 @@ Si le cluster local utilise réellement ce `hostPath`, le nœud doit voir :
 /tmp/parcelpulse-models/model.joblib
 ```
 
-La manière exacte de copier ce fichier dépend du cluster utilisé et n’est pas précisée dans la source DataScientest.
+La manière exacte de copier ce fichier dépend du cluster utilisé. Un `initContainer` (voir manifest ci-dessous) permet également d'automatiser cette copie depuis l'image vers le volume afin d'éviter tout `CrashLoopBackOff`.
 
 ---
 
@@ -1064,9 +1088,23 @@ spec:
         app: parcelpulse-api
 
     spec:
+      initContainers:
+        - name: init-model-artifact
+          image: parcelpulse-api:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - "if [ ! -f /models/model.joblib ]; then cp /app/models/model.joblib /models/model.joblib; fi"
+          volumeMounts:
+            - name: model-storage
+              mountPath: /models
+
       containers:
         - name: api
-          image: USER/parcelpulse-api:latest
+          # Pour le déploiement DockerHub : remplacer par <DOCKERHUB_USER>/parcelpulse-api:latest
+          image: parcelpulse-api:latest
+          imagePullPolicy: IfNotPresent
 
           ports:
             - containerPort: 8000

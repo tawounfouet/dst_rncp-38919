@@ -81,19 +81,32 @@ PV
 
 # 2. Vue d’ensemble des objets à connaître
 
+```mermaid
+flowchart TD
+    subgraph NS[Namespace : isolation des ressources]
+        CM[ConfigMap : variables env] --> Deploy[Deployment : gestion des répliques]
+        Deploy --> Pods[Pods : conteneurs API]
+        Svc[Service : routage réseau] --> Pods
+        Pods --> PVC[PersistentVolumeClaim]
+        PVC --> PV[PersistentVolume]
+    end
+```
+
 ```text
-Namespace
-│
-├── ConfigMap
-│
-├── Deployment
-│   └── Pods
-│
-├── Service
-│   └── accès réseau aux Pods
-│
-└── PVC
-    └── PV
++-----------------------------------------------------------------+
+|               Namespace (Isolation des ressources)              |
+|                                                                 |
+|   [ConfigMap] -------------------> [Deployment]                 |
+|   (Variables d'env)                      |                      |
+|                                          v                      |
+|   [Service K8s] -------------> [Pods applicatifs]               |
+|   (Routage & Port 8000)                  |                      |
+|                                          v                      |
+|                              [PersistentVolumeClaim]            |
+|                                          |                      |
+|                                          v                      |
+|                               [PersistentVolume]                |
++-----------------------------------------------------------------+
 ```
 
 ---
@@ -688,6 +701,7 @@ metadata:
   name: model-pv
 
 spec:
+  storageClassName: manual
   capacity:
     storage: 1Gi
 
@@ -698,8 +712,9 @@ spec:
     path: /tmp/rncp-models
 ```
 
-> `hostPath` n’est pas imposé dans le support.
-> Il est utilisé ici uniquement pour illustrer la relation PV / PVC dans un environnement de lab.
+> **Piège Récurrent / Gotcha :**  
+> `storageClassName: manual` est essentiel en environnement local (Minikube, K3s, Kind). Sans cette directive explicite, le cluster tente de lier le PVC à sa `StorageClass` par défaut (avec provisionnement dynamique) au lieu de le lier à votre `PersistentVolume` statique.
+> `hostPath` est utilisé ici pour illustrer la persistance dans un lab sans cluster cloud externe.
 
 ---
 
@@ -765,6 +780,7 @@ metadata:
   namespace: rncp-bloc3
 
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
 
