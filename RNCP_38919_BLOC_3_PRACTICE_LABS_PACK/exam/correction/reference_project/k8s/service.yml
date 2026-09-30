@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: parcelpulse-api-service
+  namespace: parcelpulse
+spec:
+  selector:
+    app: parcelpulse-api
+  ports:
+    - port: 8000
+      targetPort: 8000

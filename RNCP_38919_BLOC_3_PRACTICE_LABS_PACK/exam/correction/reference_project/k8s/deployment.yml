@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parcelpulse-api
+  namespace: parcelpulse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: parcelpulse-api
+  template:
+    metadata:
+      labels:
+        app: parcelpulse-api
+    spec:
+      initContainers:
+        - name: init-model-artifact
+          image: parcelpulse-api:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - "if [ ! -f /models/model.joblib ]; then cp /app/models/model.joblib /models/model.joblib; fi"
+          volumeMounts:
+            - name: model-storage
+              mountPath: /models
+      containers:
+        - name: api
+          # Pour le déploiement DockerHub : remplacer par <DOCKERHUB_USER>/parcelpulse-api:latest
+          image: parcelpulse-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: parcelpulse-config
+          volumeMounts:
+            - name: model-storage
+              mountPath: /models
+      volumes:
+        - name: model-storage
+          persistentVolumeClaim:
+            claimName: parcelpulse-pvc
