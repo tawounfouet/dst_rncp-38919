@@ -1,0 +1,145 @@
+[
+  {
+    "delivery_id": 1001,
+    "customer_id": 501,
+    "customer_city": "Paris",
+    "vehicle_type": "bike",
+    "distance_km": 4.2,
+    "traffic_level": "high",
+    "weather": "rain",
+    "delivery_minutes": 38,
+    "late_delivery": 1
+  },
+  {
+    "delivery_id": 1002,
+    "customer_id": 502,
+    "customer_city": "Poissy",
+    "vehicle_type": "car",
+    "distance_km": 18.4,
+    "traffic_level": "medium",
+    "weather": "clear",
+    "delivery_minutes": 42,
+    "late_delivery": 0
+  },
+  {
+    "delivery_id": 1003,
+    "customer_id": 503,
+    "customer_city": "PARIS",
+    "vehicle_type": "bike",
+    "distance_km": 3.1,
+    "traffic_level": "low",
+    "weather": "clear",
+    "delivery_minutes": 19,
+    "late_delivery": 0
+  },
+  {
+    "delivery_id": 1004,
+    "customer_id": 501,
+    "customer_city": " Paris ",
+    "vehicle_type": "scooter",
+    "distance_km": 7.8,
+    "traffic_level": "high",
+    "weather": "rain",
+    "delivery_minutes": 47,
+    "late_delivery": 1
+  },
+  {
+    "delivery_id": 1005,
+    "customer_id": 504,
+    "customer_city": "Versailles",
+    "vehicle_type": "car",
+    "distance_km": 15.0,
+    "traffic_level": "medium",
+    "weather": "clear",
+    "delivery_minutes": 34,
+    "late_delivery": 0
+  },
+  {
+    "delivery_id": 1006,
+    "customer_id": 505,
+    "customer_city": "Poissy",
+    "vehicle_type": "bike",
+    "distance_km": null,
+    "traffic_level": "medium",
+    "weather": "wind",
+    "delivery_minutes": 31,
+    "late_delivery": 0
+  },
+  {
+    "delivery_id": 1007,
+    "customer_id": 506,
+    "customer_city": "Nanterre",
+    "vehicle_type": "scooter",
+    "distance_km": 9.7,
+    "traffic_level": null,
+    "weather": "clear",
+    "delivery_minutes": 44,
+    "late_delivery": 1
+  },
+  {
+    "delivery_id": 1008,
+    "customer_id": 507,
+    "customer_city": "Paris",
+    "vehicle_type": "car",
+    "distance_km": 12.4,
+    "traffic_level": "high",
+    "weather": "rain",
+    "delivery_minutes": 58,
+    "late_delivery": 1
+  },
+  {
+    "delivery_id": 1009,
+    "customer_id": 508,
+    "customer_city": "Boulogne-Billancourt",
+    "vehicle_type": "bike",
+    "distance_km": 5.5,
+    "traffic_level": "low",
+    "weather": "clear",
+    "delivery_minutes": 24,
+    "late_delivery": 0
+  },
+  {
+    "delivery_id": 1010,
+    "customer_id": 509,
+    "customer_city": "Nanterre",
+    "vehicle_type": "car",
+    "distance_km": 11.1,
+    "traffic_level": "medium",
+    "weather": "wind",
+    "delivery_minutes": 37,
+    "late_delivery": 0
+  },
+  {
+    "delivery_id": 1011,
+    "customer_id": 510,
+    "customer_city": "Paris",
+    "vehicle_type": "scooter",
+    "distance_km": 6.2,
+    "traffic_level": "high",
+    "weather": "clear",
+    "delivery_minutes": 41,
+    "late_delivery": 1
+  },
+  {
+    "delivery_id": 1012,
+    "customer_id": 511,
+    "customer_city": "Versailles",
+    "vehicle_type": "bike",
+    "distance_km": 8.0,
+    "traffic_level": "medium",
+    "weather": "rain",
+    "delivery_minutes": 35,
+    "late_delivery": 0
+  },
+  {
+    "delivery_id": 1003,
+    "customer_id": 503,
+    "customer_city": "PARIS",
+    "vehicle_type": "bike",
+    "distance_km": 3.1,
+    "traffic_level": "low",
+    "weather": "clear",
+    "delivery_minutes": 19,
+    "late_delivery": 0
+  }
+]

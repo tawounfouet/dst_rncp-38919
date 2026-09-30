@@ -1,0 +1,15 @@
+services:
+  db:
+    # TODO image MariaDB
+    # TODO environment
+    # TODO ports
+    # TODO volume
+
+  phpmyadmin:
+    # TODO image
+    # TODO PMA_HOST / PMA_PORT
+    # TODO ports
+    # TODO depends_on
+
+volumes:
+  # TODO
