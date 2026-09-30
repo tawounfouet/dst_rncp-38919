@@ -70,24 +70,40 @@ Grafana
 
 ## Réflexe de révision
 
+```mermaid
+flowchart TD
+    A[Code : Python / FastAPI] --> B[Test : Pytest]
+    B --> C[CI : GitLab CI]
+    C --> D[Build : Docker Image]
+    D --> E[Registry : DockerHub]
+    E --> F[Deploy : Kubernetes]
+    F --> G[Expose : Service K8s]
+    G --> H[Monitor : Prometheus]
+    H --> I[Dashboard : Grafana]
+```
+
 ```text
-CODE
- ↓
-TEST
- ↓
-CI
- ↓
-BUILD IMAGE
- ↓
-REGISTRY
- ↓
-DEPLOY
- ↓
-EXPOSE
- ↓
-MONITOR
- ↓
-DASHBOARD
++-------------------------------------------------------------+
+|                     Modèle Mental Global                     |
++-------------------------------------------------------------+
+  CODE (Python / FastAPI)
+   ↓
+  TEST (Pytest)
+   ↓
+  CI (GitLab CI)
+   ↓
+  BUILD IMAGE (Docker)
+   ↓
+  REGISTRY (DockerHub)
+   ↓
+  DEPLOY (Kubernetes)
+   ↓
+  EXPOSE (Service K8s)
+   ↓
+  MONITOR (Prometheus)
+   ↓
+  DASHBOARD (Grafana)
++-------------------------------------------------------------+
 ```
 
 Traduction concrète :

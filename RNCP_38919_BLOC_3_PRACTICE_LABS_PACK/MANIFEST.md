@@ -1,12 +1,15 @@
 # Manifest
 
-Total : **141 fichiers**.
+Total : **144 fichiers**.
 
 ```text
 MANIFEST.md
 README.md
 START_HERE.md
 VALIDATION_REPORT.txt
+docs/AUDIT_ET_ANALYSE_OPERATIONNELLE_CORRECTION.md
+docs/FEEDBACK_ET_RETOUR_EXPERIENCE.md
+docs/PLAN_IMPLEMENTATION_CORRECTIFS_ET_AMELIORATIONS.md
 exam/correction/15_RNCP_38919_BLOC_3_CORRIGE_EXAMEN_BLANC_01.md
 exam/correction/reference_project/.dockerignore
 exam/correction/reference_project/.env.example
