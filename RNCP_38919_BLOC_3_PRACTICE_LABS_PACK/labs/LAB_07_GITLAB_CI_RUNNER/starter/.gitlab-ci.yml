@@ -1,0 +1,6 @@
+stages:
+  - test
+  - build
+
+# TODO: job tests exécutant pytest
+# TODO: job build exécutant docker build

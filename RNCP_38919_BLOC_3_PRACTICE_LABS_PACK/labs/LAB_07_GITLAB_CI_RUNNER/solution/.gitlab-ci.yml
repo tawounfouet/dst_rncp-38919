@@ -1,0 +1,17 @@
+stages:
+  - test
+  - build
+
+tests:
+  stage: test
+  script:
+    - python --version
+    - python -m venv .venv
+    - source .venv/bin/activate
+    - pip install -r requirements.txt
+    - pytest -v
+
+docker_build:
+  stage: build
+  script:
+    - docker build -t parcelpulse-api:latest .

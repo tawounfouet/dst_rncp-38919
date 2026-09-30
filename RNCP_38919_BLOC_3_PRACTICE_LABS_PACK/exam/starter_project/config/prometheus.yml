@@ -1,0 +1,5 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  # TODO: ajouter job_name et target app:8000

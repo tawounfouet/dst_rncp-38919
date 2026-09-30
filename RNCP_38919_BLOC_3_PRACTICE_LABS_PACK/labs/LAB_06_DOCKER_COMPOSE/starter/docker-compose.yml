@@ -1,0 +1,11 @@
+services:
+  app:
+    # TODO: build, ports, environment, volume /models
+
+  prometheus:
+    image: prom/prometheus
+    # TODO: port, prometheus.yml, depends_on
+
+  grafana:
+    image: grafana/grafana
+    # TODO: port, datasource provisioning, depends_on
