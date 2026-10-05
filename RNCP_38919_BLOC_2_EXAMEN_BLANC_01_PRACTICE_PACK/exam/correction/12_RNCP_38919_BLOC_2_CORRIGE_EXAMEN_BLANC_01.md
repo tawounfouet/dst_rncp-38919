@@ -38,6 +38,16 @@
 > Les choix techniques proposés ci-dessous sont **une solution de référence possible**.
 > D’autres solutions peuvent être correctes si elles satisfont le besoin et sont justifiées.
 
+> **Projet exécutable**
+>
+> Ce corrigé existe aussi sous forme de projet complet, réellement exécutable
+> et testé de bout en bout (ETL → MariaDB → ORM → ingestion → ML → tests) :
+> [`green_delivery/`](green_delivery/). Voir son
+> [`README.md`](green_delivery/README.md) et son
+> [`ARCHITECTURE.md`](green_delivery/ARCHITECTURE.md).
+> Les résultats obtenus reproduisent exactement ceux décrits ici
+> (23 livraisons, 22 clients, accuracy ≈ 0.7143, matrice `[[4, 0], [2, 1]]`).
+
 ---
 
 # 1. Résultat attendu en une vue
