@@ -42,3 +42,8 @@ htmlcov/
 .vscode/
 *.swp
 *.swo
+
+# Secrets / clés privées
+*.pem
+RNCP_38919_BLOC_3_PRACTICE_LABS_PACK/data_enginering_machine.pem
+RNCP_38919_BLOC_2_EXAMEN_BLANC_01_PRACTICE_PACK/data_enginering_machine.pem
