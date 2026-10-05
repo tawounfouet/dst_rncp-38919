@@ -10,7 +10,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
-df = pd.read_csv("data/deliveries_ml.csv")
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_PATH = BASE_DIR / "data" / "deliveries_ml.csv"
+MODEL_PATH = BASE_DIR / "models" / "model.joblib"
+
+df = pd.read_csv(DATA_PATH)
 
 numeric_features = ["distance_km"]
 categorical_features = ["customer_city", "vehicle_type", "traffic_level", "weather"]
@@ -47,5 +51,6 @@ print("precision:", precision_score(y_test, pred, zero_division=0))
 print("recall   :", recall_score(y_test, pred, zero_division=0))
 print("f1       :", f1_score(y_test, pred, zero_division=0))
 
-Path("models").mkdir(parents=True, exist_ok=True)
-joblib.dump(pipeline, "models/model.joblib")
+MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+joblib.dump(pipeline, MODEL_PATH)
+print("modèle   :", MODEL_PATH)
