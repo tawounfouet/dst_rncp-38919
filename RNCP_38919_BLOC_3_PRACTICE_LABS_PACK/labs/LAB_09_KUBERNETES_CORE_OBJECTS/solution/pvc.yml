@@ -4,6 +4,7 @@ metadata:
   name: parcelpulse-pvc
   namespace: parcelpulse
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:

@@ -13,9 +13,22 @@ spec:
       labels:
         app: parcelpulse-api
     spec:
+      initContainers:
+        - name: init-model-artifact
+          image: parcelpulse-api:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - "if [ ! -f /models/model.joblib ]; then cp /app/models/model.joblib /models/model.joblib; fi"
+          volumeMounts:
+            - name: model-storage
+              mountPath: /models
       containers:
         - name: api
-          image: USER/parcelpulse-api:latest
+          # Image locale par défaut avec IfNotPresent (ou remplacer par <DOCKER_USER>/parcelpulse-api:latest si pushé)
+          image: parcelpulse-api:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
           envFrom:

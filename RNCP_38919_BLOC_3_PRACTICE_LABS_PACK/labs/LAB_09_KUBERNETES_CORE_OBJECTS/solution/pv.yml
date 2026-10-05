@@ -3,6 +3,7 @@ kind: PersistentVolume
 metadata:
   name: parcelpulse-pv
 spec:
+  storageClassName: manual
   capacity:
     storage: 1Gi
   accessModes:
