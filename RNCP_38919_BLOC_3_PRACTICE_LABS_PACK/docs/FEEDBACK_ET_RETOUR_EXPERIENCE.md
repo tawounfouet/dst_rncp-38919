@@ -30,7 +30,7 @@ Le tableau suivant résume les écarts constatés entre la version initiale et l
 | **Sérialisation `joblib`** | Classe `DemoRiskModel` définie inline dans la doc, créant une référence `__main__.DemoRiskModel` qui crashait au chargement. | Classe isolée dans [`app/demo_model.py`](../exam/correction/reference_project/app/demo_model.py) et documentée. | Chargement infaillible du modèle dans FastAPI et Pytest (`AttributeError` éliminé). |
 | **Liaison Kubernetes PV / PVC** | Absence de `storageClassName`, laissant le PVC en statut `Pending` sur les clusters modernes. | Ajout explicite de `storageClassName: manual` dans [`k8s/pv.yml`](../exam/correction/reference_project/k8s/pv.yml) et [`k8s/pvc.yml`](../exam/correction/reference_project/k8s/pvc.yml). | Liaison immédiate (`Bound`) entre le PV et le PVC dès `kubectl apply`. |
 | **Stabilité du Pod Kubernetes** | Image `USER/` non résolue et crash immédiat (`CrashLoopBackOff`) si le dossier `/tmp` du nœud hôte était vide. | Image locale avec `imagePullPolicy: IfNotPresent` et `initContainers` assurant la copie de secours du modèle. | Déploiement 100% autonome et résilient sans dépendre d'une action manuelle sur l'hôte. |
-| **Pipeline CI/CD** | Dépendance stricte à un runner privé `shell` sans image déclarée. | Image `python:3.12-slim` déclarée et service `docker:27-dind` pour compatibilité multi-runners. | Pipeline portable sur GitLab SaaS, runners Docker et runners Shell. |
+| **Pipeline CI/CD** | Un runner `shell` sans image déclarée exécute le YAML tel quel, mais un `docker:27-dind` déclaré est **ignoré** par cet exécuteur : le `docker build` part alors sur un socket Unix inexistant. | Pipeline **sans `image:` ni `services:`** : chaque job lance lui-même ses conteneurs via `docker run`, et `docker build` utilise le daemon de la VM. | Runner `shell` conforme à l'énoncé, sans DinD ni `privileged`, et vérifié vert de bout en bout. |
 | **Contrôle Qualité Automatisé** | Simple vérification de présence statique de fichiers. | Script [`tools/validate_reference_project.py`](../tools/validate_reference_project.py) validant structure, compilation, inférence et syntaxe YAML. | Certification automatique en un clic de l'état 100% opérationnel. |
 
 ---
@@ -125,9 +125,14 @@ Lors d'un examen chronométré de 4 heures, ces 6 pièges techniques représente
   Prévoir des valeurs par défaut robustes pour toutes les variables d'environnement (`os.getenv("MODEL_PATH", "models/model.joblib")`) permettant à l'application de tourner aussi bien en local que dans Docker et Kubernetes.
 
 ### Piège 6 : Le runner GitLab CI
-* **Problème :** Écrire un pipeline qui suppose que Docker et Python sont installés directement sur la machine hôte sans spécifier d'image, ce qui échoue dès que le pipeline est exécuté sur un runner mutualisé ou basé sur Docker.
+* **Problème :** Croire que `image:` et `services:` décrivent l'environnement du job **quelle que soit la sortie**. Or GitLab les **ignore** sur l'exécuteur `shell` : un `services: [docker:27-dind]` n'y fait rien, et le job se retrouve à parler à un socket Unix inexistant (`Cannot connect to the Docker daemon at unix:///var/run/docker.sock`).
 * **Bonne pratique recommandée :**
-  Toujours déclarer des images officielles pour chaque job (`image: python:3.12-slim` pour les tests, `image: docker:27-cli` avec le service `docker:27-dind` pour le build d'image).
+  Écrire le pipeline **pour l'exécuteur réellement demandé par l'énoncé**. Sur un runner `shell` :
+  - le job de tests lance son propre conteneur — `docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$CI_PROJECT_DIR:/build" -w /build python:3.12-slim …` ;
+  - `pip install` a besoin de `--user` (sinon `site-packages` n'est pas inscriptible) ;
+  - le job de build fait `docker build` **directement**, sans DinD et sans `privileged`, puisque le runner utilise le daemon de la machine.
+
+  Réserver `image:` / `services:` / `privileged` aux exécuteurs `docker` et `kubernetes`, et ne jamais les mélanger dans un même `.gitlab-ci.yml` : le YAML devient alors muet sur un exécuteur et actif sur l'autre.
 
 ---
 

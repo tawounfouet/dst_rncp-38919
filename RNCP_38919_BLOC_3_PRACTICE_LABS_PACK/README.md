@@ -63,6 +63,14 @@ RNCP_38919_BLOC_3_PRACTICE_LABS_PACK/
 ├── README.md              # Présentation générale du pack
 ├── MANIFEST.md            # Inventaire exhaustif des fichiers du pack
 ├── docs/                  # Documentation stratégique, audits et feedbacks
+│   ├── analyses/          # Rapports d'analyse approfondie
+│   │   └── ANALYSE_FONCTIONNELLE_ET_EXPERIENCE_DEBUTANT.md
+│   ├── plans/             # Programme de remédiation par lots
+│   │   ├── 00_CADRAGE_GLOBAL_ET_LOTISSEMENT.md
+│   │   ├── LOT_01_STARTER_PROJECT_ET_EXAMEN.md
+│   │   ├── LOT_02_AUTONOMIE_ET_FIABILISATION_LABS.md
+│   │   ├── LOT_03_PORTABILITE_ET_ENVIRONNEMENTS.md
+│   │   └── LOT_04_OUTILLAGE_ET_TESTS_AUTOMATISES.md
 │   ├── AUDIT_ET_ANALYSE_OPERATIONNELLE_CORRECTION.md
 │   ├── PLAN_IMPLEMENTATION_CORRECTIFS_ET_AMELIORATIONS.md
 │   └── FEEDBACK_ET_RETOUR_EXPERIENCE.md
@@ -72,7 +80,7 @@ RNCP_38919_BLOC_3_PRACTICE_LABS_PACK/
 │   └── correction/        # Corrigé textuel et projet de référence fonctionnel
 ├── labs/                  # 13 labs d'entraînement progressifs (LAB_01 à LAB_13)
 ├── resources/             # Fiches de cours, cheatsheets et checklists
-│   └── study_docs/        # 16 documents d'étude thématiques
+│   └── study_docs/        # 17 documents d'étude thématiques
 ├── sources/               # Extraits du référentiel source
 └── tools/                 # Scripts d'audit et de validation automatisée
 ```
@@ -81,5 +89,6 @@ RNCP_38919_BLOC_3_PRACTICE_LABS_PACK/
 
 ## Validation et conformité
 
-Le pack intègre un outil de validation automatisé dans `tools/` :
-* [validate_reference_project.py](./tools/validate_reference_project.py) : valide en 5 phases l'intégrité du code, des tests unitaires, du smoke-test HTTP, des manifestes Docker et Kubernetes.
+Le pack intègre deux outils de validation automatisée dans `tools/` :
+* [validate_entire_pack.py](./tools/validate_entire_pack.py) : audit global en 6 phases de l'intégralité du pack (inventaire, compilation Python, YAML, starter, référence et les 13 labs).
+* [validate_reference_project.py](./tools/validate_reference_project.py) : validation approfondie ciblée sur le projet de référence corrigé.

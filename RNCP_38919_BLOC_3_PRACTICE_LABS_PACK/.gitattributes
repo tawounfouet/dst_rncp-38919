@@ -1,0 +1,16 @@
+# Configuration Git pour garantir des fins de ligne Unix (LF) multi-plateformes
+* text=auto
+
+# Scripts Shell et Docker
+*.sh text eol=lf
+Dockerfile text eol=lf
+
+# Fichiers de configuration
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.md text eol=lf
+
+# Code Python
+*.py text eol=lf

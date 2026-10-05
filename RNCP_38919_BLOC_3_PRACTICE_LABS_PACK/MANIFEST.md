@@ -1,16 +1,34 @@
 # Manifest
 
-Total : **144 fichiers**.
+Total : **176 fichiers**.
 
 ```text
+.gitattributes
+.gitignore
 MANIFEST.md
 README.md
+SERVER.md
 START_HERE.md
 VALIDATION_REPORT.txt
 docs/AUDIT_ET_ANALYSE_OPERATIONNELLE_CORRECTION.md
 docs/FEEDBACK_ET_RETOUR_EXPERIENCE.md
 docs/PLAN_IMPLEMENTATION_CORRECTIFS_ET_AMELIORATIONS.md
+docs/analyses/ANALYSE_FONCTIONNELLE_ET_EXPERIENCE_DEBUTANT.md
+docs/plans/00_CADRAGE_GLOBAL_ET_LOTISSEMENT.md
+docs/plans/LOT_01_STARTER_PROJECT_ET_EXAMEN.md
+docs/plans/LOT_02_AUTONOMIE_ET_FIABILISATION_LABS.md
+docs/plans/LOT_03_PORTABILITE_ET_ENVIRONNEMENTS.md
+docs/plans/LOT_04_OUTILLAGE_ET_TESTS_AUTOMATISES.md
 exam/correction/15_RNCP_38919_BLOC_3_CORRIGE_EXAMEN_BLANC_01.md
+exam/correction/docs/00_ARCHITECTURE_ET_FONCTIONNEMENT_GLOBAL.md
+exam/correction/docs/01_EXECUTION_LOCALE_PAS_A_PAS.md
+exam/correction/docs/02_CONTENEURISATION_DOCKER_ET_COMPOSE.md
+exam/correction/docs/03_GITLAB_CI_ET_RUNNER_SHELL.md
+exam/correction/docs/04_DEPLOIEMENT_KUBERNETES_PAS_A_PAS.md
+exam/correction/docs/05_SUPERVISION_PROMETHEUS_ET_GRAFANA.md
+exam/correction/docs/06_DEPANNAGE_ET_FAQ_DES_NULS.md
+exam/correction/docs/07_RUNBOOK_COMPLET_VALIDATION_ET_PIPELINE_CI.md
+exam/correction/docs/README.md
 exam/correction/reference_project/.dockerignore
 exam/correction/reference_project/.env.example
 exam/correction/reference_project/.gitignore
@@ -35,8 +53,10 @@ exam/correction/reference_project/k8s/service.yml
 exam/correction/reference_project/models/model.joblib
 exam/correction/reference_project/requirements.txt
 exam/correction/reference_project/scripts/create_artifact.py
+exam/correction/reference_project/scripts/deploy_k8s.sh
 exam/correction/reference_project/scripts/http_client.py
 exam/correction/reference_project/scripts/smoke_test.sh
+exam/correction/reference_project/scripts/undeploy_k8s.sh
 exam/correction/reference_project/tests/__init__.py
 exam/correction/reference_project/tests/test_api.py
 exam/starter_project/.dockerignore
@@ -63,6 +83,7 @@ exam/starter_project/k8s/pvc.yml
 exam/starter_project/k8s/service.yml
 exam/starter_project/models/model.joblib
 exam/starter_project/requirements.txt
+exam/starter_project/scripts/create_artifact.py
 exam/starter_project/scripts/http_client.py
 exam/starter_project/scripts/smoke_test.sh
 exam/starter_project/tests/__init__.py
@@ -78,8 +99,12 @@ labs/LAB_01_BASH_ENV_VENV/starter/env_demo.py
 labs/LAB_02_HTTP_BASH_PYTHON/README.md
 labs/LAB_02_HTTP_BASH_PYTHON/solution/curl_examples.sh
 labs/LAB_02_HTTP_BASH_PYTHON/solution/http_client.py
+labs/LAB_02_HTTP_BASH_PYTHON/solution/mock_server.py
+labs/LAB_02_HTTP_BASH_PYTHON/starter/curl_examples.sh
 labs/LAB_02_HTTP_BASH_PYTHON/starter/http_client.py
+labs/LAB_02_HTTP_BASH_PYTHON/starter/mock_server.py
 labs/LAB_03_FASTAPI_PYDANTIC_JOBLIB/README.md
+labs/LAB_03_FASTAPI_PYDANTIC_JOBLIB/requirements.txt
 labs/LAB_03_FASTAPI_PYDANTIC_JOBLIB/solution/app.py
 labs/LAB_03_FASTAPI_PYDANTIC_JOBLIB/starter/app.py
 labs/LAB_04_PYTEST/README.md
@@ -87,8 +112,14 @@ labs/LAB_04_PYTEST/solution/test_api.py
 labs/LAB_04_PYTEST/starter/test_api.py
 labs/LAB_05_DOCKER/README.md
 labs/LAB_05_DOCKER/solution/Dockerfile
+labs/LAB_05_DOCKER/solution/app/__init__.py
+labs/LAB_05_DOCKER/solution/app/main.py
 labs/LAB_05_DOCKER/solution/commands.sh
+labs/LAB_05_DOCKER/solution/requirements.txt
 labs/LAB_05_DOCKER/starter/Dockerfile
+labs/LAB_05_DOCKER/starter/app/__init__.py
+labs/LAB_05_DOCKER/starter/app/main.py
+labs/LAB_05_DOCKER/starter/requirements.txt
 labs/LAB_06_DOCKER_COMPOSE/README.md
 labs/LAB_06_DOCKER_COMPOSE/solution/docker-compose.yml
 labs/LAB_06_DOCKER_COMPOSE/starter/docker-compose.yml
@@ -142,9 +173,11 @@ resources/study_docs/12_RNCP_38919_BLOC_3_STRATEGIE_EXAMEN_4H.md
 resources/study_docs/13_RNCP_38919_BLOC_3_CHECKLIST_JOUR_J.md
 resources/study_docs/14_RNCP_38919_BLOC_3_EXAMEN_BLANC_01.md
 resources/study_docs/15_RNCP_38919_BLOC_3_CORRIGE_EXAMEN_BLANC_01.md
+resources/study_docs/16_RNCP_38919_BLOC_3_GUIDE_ENVIRONNEMENTS_ET_PORTABILITE.md
 sources/Examen_RNCP_38919_Bloc_3_Data_Engineer_DevOps.md
 sources/SOURCE_SCOPE.md
 tools/check_python_syntax.py
 tools/list_pack.py
+tools/validate_entire_pack.py
 tools/validate_reference_project.py
 ```

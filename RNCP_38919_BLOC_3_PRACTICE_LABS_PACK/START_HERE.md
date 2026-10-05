@@ -90,8 +90,18 @@ Pour travailler brique par brique ou combler des lacunes ciblées :
 * [08 — Guide Kubernetes & persistance PV/PVC](./resources/study_docs/08_RNCP_38919_BLOC_3_KUBERNETES_GUIDE.md)
 * [12 — Stratégie d'examen 4h & gestion du temps](./resources/study_docs/12_RNCP_38919_BLOC_3_STRATEGIE_EXAMEN_4H.md)
 * [13 — Checklist opérationnelle du Jour J](./resources/study_docs/13_RNCP_38919_BLOC_3_CHECKLIST_JOUR_J.md)
+* [16 — Guide des environnements & portabilité multi-OS](./resources/study_docs/16_RNCP_38919_BLOC_3_GUIDE_ENVIRONNEMENTS_ET_PORTABILITE.md)
 
 ### Dossier stratégique & Audits techniques
+* [Rapport d'analyse de viabilité & expérience débutant](./docs/analyses/ANALYSE_FONCTIONNELLE_ET_EXPERIENCE_DEBUTANT.md)
 * [Audit et analyse opérationnelle du projet](./docs/AUDIT_ET_ANALYSE_OPERATIONNELLE_CORRECTION.md)
 * [Plan d'implémentation et correctifs appliqués](./docs/PLAN_IMPLEMENTATION_CORRECTIFS_ET_AMELIORATIONS.md)
 * [Feedback, pièges récurrents et retour d'expérience](./docs/FEEDBACK_ET_RETOUR_EXPERIENCE.md)
+
+### Programme de remédiation par lots
+* [00 — Cadrage global et lotissement](./docs/plans/00_CADRAGE_GLOBAL_ET_LOTISSEMENT.md)
+* [Lot 1 — Starter Project & Simulation d'Examen](./docs/plans/LOT_01_STARTER_PROJECT_ET_EXAMEN.md)
+* [Lot 2 — Autonomie & Fiabilisation des 13 Labs](./docs/plans/LOT_02_AUTONOMIE_ET_FIABILISATION_LABS.md)
+* [Lot 3 — Portabilité & Environnements d'Exécution](./docs/plans/LOT_03_PORTABILITE_ET_ENVIRONNEMENTS.md)
+* [Lot 4 — Outillage d'Assurance Qualité & Validation E2E](./docs/plans/LOT_04_OUTILLAGE_ET_TESTS_AUTOMATISES.md)
+
