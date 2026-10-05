@@ -1,0 +1,5 @@
+candidate_workspace/
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
