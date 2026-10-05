@@ -1,0 +1,25 @@
+# Dépendances des Practice Labs — Bloc 2
+# Installation : pip install -r requirements.txt
+#
+# Version Python conseillée : 3.11+ (testé 3.13)
+
+# LAB 01 — JSON / pandas / visualisation
+pandas>=2.0
+matplotlib>=3.7
+
+# LAB 03 / LAB 04 — DB relationnelle + ORM
+sqlalchemy>=2.0
+pymysql>=1.1
+python-dotenv>=1.0
+
+# LAB 05 — tests
+pytest>=8.0
+
+# LAB 06 — machine learning
+scikit-learn>=1.4
+joblib>=1.3
+
+# LAB 01 — notebooks (optionnel)
+jupyter
+ipykernel
+nbformat
