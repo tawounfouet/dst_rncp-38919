@@ -875,26 +875,43 @@ stages:
   - test
   - build
 
+variables:
+  IMAGE: parcelpulse-api:latest
+  PYTHON_IMAGE: python:3.12-slim
+
 tests:
   stage: test
-  image: python:3.12-slim
   script:
-    - python --version
-    - pip install --no-cache-dir -r requirements.txt
-    - pytest -v
+    - |
+      docker run --rm \
+        --user "$(id -u):$(id -g)" \
+        -e HOME=/tmp \
+        -v "$CI_PROJECT_DIR:/build" -w /build \
+        "$PYTHON_IMAGE" \
+        sh -c 'set -e
+               python --version
+               python -m pip install --no-cache-dir --user -r requirements.txt
+               python scripts/create_artifact.py
+               python -m pytest -v'
 
 docker_build:
   stage: build
-  image: docker:27-cli
-  services:
-    - docker:27-dind
-  variables:
-    DOCKER_TLS_CERTDIR: ""
   script:
-    - docker build -t parcelpulse-api:latest .
+    - docker build -t "$IMAGE" .
+    - docker run --rm "$IMAGE" python -c "from app.main import app; print('Import OK:', app.title)"
 ```
 
-Cette configuration est compatible aussi bien avec un Runner `shell` qu'avec un Runner `docker` standard (utilisant Docker-in-Docker).
+⚠️ **Attention à la formulation de la question.** L'énoncé demande un runner de type **`shell`**, et cette configuration est écrite pour lui. Sur l'exécuteur `shell`, GitLab **ignore** `image:` et `services:` : il n'y a donc **ni `docker:27-dind`, ni `DOCKER_TLS_CERTDIR`, ni `privileged`**. Les jobs lancent eux-mêmes leurs conteneurs avec `docker run`, et `docker build` utilise directement le daemon Docker de la machine virtuelle — ce qui est précisément **pourquoi** ce runner ne demande aucun privilège particulier.
+
+Les trois éléments à ne pas oublier dans le job `tests` :
+
+| Élément | Rôle |
+|---|---|
+| `--user "$(id -u):$(id -g)"` + `-e HOME=/tmp` | le conteneur tourne avec l'utilisateur du runner : les fichiers produits lui appartiennent et restent supprimables par le nettoyage GitLab |
+| `pip install ... --user` | obligatoire, sinon l'installation échoue faute de droits sur `site-packages` |
+| `python -m pytest` | `$HOME/.local/bin` n'est pas dans le `PATH` ; `python -m` trouve le module |
+
+Et pour le runner : `sudo gitlab-runner list` / `sudo -u gitlab-runner gitlab-runner verify` (le `verify` doit renvoyer `is valid`).
 
 
 Vérifier :

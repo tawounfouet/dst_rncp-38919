@@ -1,1 +1,8 @@
-# TODO: compléter deployment.yml
+# TODO: compléter le manifeste Deployment (kind: Deployment)
+# Nom attendu : parcelpulse-api, namespace: parcelpulse, replicas: 1
+# Points d'attention :
+# - Image : Pour un test local sur Minikube/Kind, utiliser parcelpulse-api:latest avec imagePullPolicy: IfNotPresent
+#           Pour un rendu avec DockerHub, utiliser <VOTRE_USER>/parcelpulse-api:latest
+# - Variables : envFrom configMapRef parcelpulse-config
+# - Volume : monter parcelpulse-pvc sur /models
+# - ASTUCE ROBUSTESSE : Vous pouvez ajouter un initContainer pour copier le modèle initial si absent du volume.

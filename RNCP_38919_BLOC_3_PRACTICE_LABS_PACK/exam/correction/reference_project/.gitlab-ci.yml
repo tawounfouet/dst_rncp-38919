@@ -2,21 +2,57 @@ stages:
   - test
   - build
 
+variables:
+  IMAGE: parcelpulse-api:latest
+  PYTHON_IMAGE: python:3.12-slim
+  # ATTENTION : ce pipeline est concu pour le runner "shell" (executor shell).
+  # Sur cet executor, GitLab IGNORE les mots-cles image: et services: d'un job :
+  # le job s'execute directement sur la machine virtuelle. Il n'y a donc pas
+  # de conteneur de job ni de service DinD ; le daemon Docker de l'hote est
+  # utilise tel quel pour docker build, ce qui evite tout besoin de privileged.
+  # Les tests sont neanmoins lances DANS un conteneur (docker run ci-dessous)
+  # pour disposer de la meme version de Python que le Dockerfile (3.12) et ne
+  # pas polluer la VM avec des dependances installees au niveau systeme.
+
 tests:
   stage: test
-  image: python:3.12-slim
   script:
-    - python --version
-    - pip install --no-cache-dir -r requirements.txt
-    - pytest -v
+    # --user + HOME=/tmp : les fichiers produits (model.joblib, .pytest_cache)
+    # appartiennent a l'utilisateur du runner et restent donc supprimables par
+    # le nettoyage automatique de GitLab. pip doit imperativement avoir --user
+    # aussi, sinon l'installation echoue faute de droits sur site-packages.
+    - |
+      docker run --rm \
+        --user "$(id -u):$(id -g)" \
+        -e HOME=/tmp \
+        -v "$CI_PROJECT_DIR:/build" -w /build \
+        "$PYTHON_IMAGE" \
+        sh -c 'set -e
+               python --version
+               python -m pip install --no-cache-dir --user -r requirements.txt
+               python scripts/create_artifact.py
+               python -m pytest -v'
+  after_script:
+    - rm -rf "$CI_PROJECT_DIR/.pytest_cache"
 
 docker_build:
   stage: build
-  image: docker:27-cli
-  services:
-    - docker:27-dind
-  variables:
-    DOCKER_TLS_CERTDIR: ""
   script:
-    - docker build -t parcelpulse-api:latest .
+    - docker build -t "$IMAGE" .
+    # Verification de l'image buildsee : l'artefact ML doit avoir ete copie
+    # dans l'image ET l'application doit s'importer sans erreur au demarrage.
+    - docker run --rm "$IMAGE" python -c "from app.main import app; print('Import OK:', app.title)"
 
+docker_push:
+  stage: build
+  # Etape optionnelle : elle ne bloque pas le pipeline. A lancer manuellement
+  # une fois les variables CI/CD DOCKERHUB_USER et DOCKERHUB_PASSWORD creees
+  # dans Settings > CI/CD > Variables (marquees "masked" pour le mot de passe).
+  # C'est l'equivalent de l'usage des "repertoires d'un compte heberge par
+  # DockerHub" demande a l'examen.
+  when: manual
+  allow_failure: true
+  script:
+    - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USER" --password-stdin
+    - docker build -t "$DOCKERHUB_USER/parcelpulse-api:latest" .
+    - docker push "$DOCKERHUB_USER/parcelpulse-api:latest"

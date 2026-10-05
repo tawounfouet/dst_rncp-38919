@@ -3,10 +3,17 @@ kind: PersistentVolume
 metadata:
   name: parcelpulse-pv
 spec:
+  # Aucune StorageClass "manual" n'existe : c'est un PV statique (statique).
+  # Le PVC requête la même classe, donc Kubernetes les lie directement en Bound.
   storageClassName: manual
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
+  # Retain : le PV n'est pas supprimé quand le PVC est deleté.
+  # Pour repartir d'un déploiement propre : kubectl delete pv parcelpulse-pv
+  persistentVolumeReclaimPolicy: Retain
+  # Stockage local au NŒUD (et non au cluster) : le PV est propre à chaque nœud,
+  # ce qui convient à un cluster mono-nœud comme kind/minikube/k3d.
   hostPath:
     path: /tmp/parcelpulse-models

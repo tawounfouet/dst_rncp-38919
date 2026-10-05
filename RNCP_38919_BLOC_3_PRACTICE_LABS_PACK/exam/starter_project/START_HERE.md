@@ -17,7 +17,11 @@ Ce guide vous accompagne pas à pas dans la réalisation de l'examen blanc.
      source .venv/bin/activate
      pip install -r requirements.txt
      ```
-   * Générer le modèle initial avec `python scripts/create_artifact.py`.
+   * (Re)générer l'artefact machine learning initial :
+     ```bash
+     python scripts/create_artifact.py
+     ```
+     *(Un modèle initial sérialisé est également pré-fourni dans `models/model.joblib`).*
 
 3. **Implémentation progressive (suivre les `TODO`) :**
    * Étape 1 : `app/config.py` (variables d'environnement).

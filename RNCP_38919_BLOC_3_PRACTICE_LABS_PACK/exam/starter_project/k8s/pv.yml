@@ -1,1 +1,6 @@
-# TODO: compléter pv.yml
+# TODO: compléter le manifeste PersistentVolume (kind: PersistentVolume)
+# Nom attendu : parcelpulse-pv
+# Points d'attention :
+# - capacity: 1Gi, accessModes: ReadWriteOnce
+# - hostPath: path: /tmp/parcelpulse-models
+# - CONSEIL : Spécifier explicitement storageClassName: manual pour éviter le conflit avec la StorageClass par défaut.

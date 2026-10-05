@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
         - name: init-model-artifact
-          image: parcelpulse-api:latest
+          image: tawounfouet/parcelpulse-api:latest
           imagePullPolicy: IfNotPresent
           command:
             - sh
@@ -26,8 +26,26 @@ spec:
               mountPath: /models
       containers:
         - name: api
-          # Pour le déploiement DockerHub : remplacer par <DOCKERHUB_USER>/parcelpulse-api:latest
-          image: parcelpulse-api:latest
+          # Image publiee sur DockerHub par le job CI 'docker_push' (pipeline GitLab).
+          #
+          # Pourquoi une reference de registre et pas 'parcelpulse-api:latest' ?
+          # Docker et containerd (le runtime de Kubernetes) ont DEUX magasins
+          # d'images separes : une image construite par 'docker build' sur la
+          # machine est INVISIBLE du cluster, et le pod tombe en ErrImageNeverPull.
+          # En Designant l'image par son nom de registre, un seul manifest sert
+          # aux deux cas :
+          #   - kind / minikube  -> l'image est chargee localement (kind load), donc
+          #                         IfNotPresent ne tente aucun pull ;
+          #   - MicroK8s / AWS   -> containerd tire l'image publique sur DockerHub.
+          #
+          # Pour un deploiement 100% hors-ligne, remplacer par un nom local
+          # (ex. parcelpulse-api:latest) et importer l'image dans containerd :
+          #     docker save parcelpulse-api:latest | sudo microk8s ctr images import -
+          # puis aligner imagePullPolicy sur Never.
+          image: tawounfouet/parcelpulse-api:latest
+          # IfNotPresent = ne pas re-telecharger si l'image est deja sur le nœud.
+          # Sur un tag mutable (:latest), un redeploiement ne re-tire donc pas la
+          # version fraiche : utiliser 'deploy_k8s.sh --refresh' pour forcer.
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000

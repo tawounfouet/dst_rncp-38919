@@ -1,1 +1,6 @@
-# TODO: compléter pvc.yml
+# TODO: compléter le manifeste PersistentVolumeClaim (kind: PersistentVolumeClaim)
+# Nom attendu : parcelpulse-pvc, namespace: parcelpulse
+# Points d'attention :
+# - accessModes: ReadWriteOnce
+# - resources.requests.storage: 1Gi
+# - CONSEIL : Aligner storageClassName: manual avec le PV.
